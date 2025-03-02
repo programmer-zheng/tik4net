@@ -315,6 +315,17 @@ namespace tik4net.Api
                 }
                 else
                 {
+                    // response with chinese support
+                    // https://github.com/danikf/tik4net/issues/8#issuecomment-235536560
+                    byte[] byteArray = new byte[wordLength];
+                    for (int i = 0; i < wordLength; i++)
+                    {
+                        byte readByte = (byte)_tcpConnectionStream.ReadByte();
+                        byteArray[i] = readByte;
+                    }
+                    result = Encoding.GetString(byteArray);
+                
+                /*
                     StringBuilder resultBuilder = new StringBuilder((int)wordLength);
                     for (int i = 0; i < wordLength; i++)
                     {
@@ -323,6 +334,7 @@ namespace tik4net.Api
                     }
 
                     result = resultBuilder.ToString();
+                    */
                 }
             } while (skipEmptyRow && string.IsNullOrWhiteSpace(result));            
 
